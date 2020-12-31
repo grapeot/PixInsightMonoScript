@@ -48,7 +48,7 @@ let main = function() {
    }
 
    // final L integration
-   let lightFrameFn = rootDir + '/AllL_light.xisf';
+   let lightFrameFn = outDir + '/AllL_light.xisf';
    integrate(allRegisteredFrames, lightFrameFn);
 }
 
