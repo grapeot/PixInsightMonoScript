@@ -1,4 +1,4 @@
-# PixInsights Monochrome Workflow Script
+# PixInsight Monochrome Workflow Script
 
 For DSO photo processing, PixInsights has a Weighted Batch Preprocessing (WBPP) script to simplify the tedious calibration, registration, and integration process.
 It's handy for OSC cameras, but we need to do 4 separate WBPPs if we use LRGB workflow for example.
