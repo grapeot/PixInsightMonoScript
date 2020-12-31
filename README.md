@@ -12,3 +12,8 @@ One now only needs to specify the frames' locations in the first few lines of co
 2. Open the script `Preprocessing.js`.
 3. Change the variables in the first few lines of code (before the main function).
 4. Hit F9 to run.
+
+## Known issues
+
+* FITS headers are not properly set, e.g. total integration time.
+* Most parameters are default ones. You may need to tune it to get the optimal performance.

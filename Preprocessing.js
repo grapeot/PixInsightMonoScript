@@ -4,12 +4,17 @@
 // This script only supports monochrome workflow because the current WBPP is already good enough for OSC cameras
 let rootDir = 'D:/Media/Photos/2020/20201229 Heart/Raw';
 let outDir = 'D:/Media/Photos/2020/20201229 Heart/Test';
-let defaultDark = "D:/Media/Photos/DarkFlatLibrary/Dark/6200MM/100gain300s_FF/MasterDarkUncalibrated.xisf";
+let darkLibrary = {
+   '-10C30s': "D:/Media/Photos/DarkFlatLibrary/Dark/6200MM/100gain30s_FF/MasterDarkUncalibrated.xisf",
+   '-10C45s': "D:/Media/Photos/DarkFlatLibrary/Dark/6200MM/100gain45s_FF/MasterDarkUncalibrated.xisf",
+   '-10C180s': "D:/Media/Photos/DarkFlatLibrary/Dark/6200MM/100gain45s_FF/MasterDarkUncalibrated.xisf",
+   '0C300s': "D:/Media/Photos/DarkFlatLibrary/Dark/6200MM/100gain300s_FF/MasterDarkUncalibrated.xisf"
+};
 let defaultBias = "D:/Media/Photos/DarkFlatLibrary/Bias/6200MM_100gain_FF/masterBias-BINNING_1.xisf";
 let channels = [
-   {'channel': 'Ha', 'light': 'IC1805Ha', 'flat': 'IC1805H_Flat'},
-   {'channel': 'Sii', 'light': 'IC1805S', 'flat': 'IC1805S_Flat'},
-   {'channel': 'Oiii', 'light': 'IC1805O', 'flat': 'IC1805O_Flat'}
+   {'channel': 'Sii', 'light': 'IC1805S', 'flat': 'IC1805S_Flat', 'dark': darkLibrary['-10C180s']},
+   {'channel': 'Oiii', 'light': 'IC1805O', 'flat': 'IC1805O_Flat', 'dark': darkLibrary['-10C180s']},
+   {'channel': 'Ha', 'light': 'IC1805Ha', 'flat': 'IC1805H_Flat', 'dark': darkLibrary['-10C180s']}
 ];
 
 let main = function() {
@@ -23,7 +28,7 @@ let main = function() {
       
       // light calibration and integration
       inFiles = findFits(rootDir + '/' + channels[channel_i]['light']);
-      let calibratedLights = calibrate(inFiles, outDir, defaultBias, defaultDark, masterFlatFn);
+      let calibratedLights = calibrate(inFiles, outDir, defaultBias, channels[channel_i]['dark'], masterFlatFn);
       if (firstCalibratedLight == '') {
          firstCalibratedLight = calibratedLights[0];
       }
@@ -325,8 +330,8 @@ let starAlign = function(infiles, refFile, outdir) {
    P.onError = StarAlignment.prototype.Continue;
    P.useFileThreads = true;
    P.fileThreadOverload = 1.20;
-   P.maxFileReadThreads = 1;
-   P.maxFileWriteThreads = 1;
+   P.maxFileReadThreads = 8;
+   P.maxFileWriteThreads = 8;
 
    let ok = P.executeGlobal();
    if (ok) {
@@ -334,7 +339,7 @@ let starAlign = function(infiles, refFile, outdir) {
       for ( let c = 0; c < P.outputData.length; ++c )
       {
          let filePath = P.outputData[ c ][ 0 ]; // outputData.outputImage
-         if ( !isEmptyString( filePath ) )
+         if ( filePath != "" )
             if ( File.exists( filePath ) )
                images.push( filePath );
             else
