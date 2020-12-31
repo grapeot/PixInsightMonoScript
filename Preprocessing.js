@@ -3,7 +3,7 @@
 // Simple integrate the dark frames to get the master dark
 // This script only supports monochrome workflow because the current WBPP is already good enough for OSC cameras
 let rootDir = 'D:/Media/Photos/2020/20201229 Heart/Raw';
-let outDir = 'D:/Media/Photos/2020/20201229 Heart/Test';
+let outDir = rootDir + '/../Test';
 let darkLibrary = {
    '-10C30s': "D:/Media/Photos/DarkFlatLibrary/Dark/6200MM/100gain30s_FF/MasterDarkUncalibrated.xisf",
    '-10C45s': "D:/Media/Photos/DarkFlatLibrary/Dark/6200MM/100gain45s_FF/MasterDarkUncalibrated.xisf",
@@ -44,12 +44,12 @@ let main = function() {
       // housekeeping
       channels[channel_i]['registeredLights'] = registeredLights;
       channels[channel_i]['masterLight'] = masterLightFn;
-      registeredLights.forEach(function(x) { allRegisteredFrames.push(x); });
+      allRegisteredFrames.forEach(function(x) { allRegisteredFrames.push(x); });
    }
 
    // final L integration
    let lightFrameFn = rootDir + '/AllL_light.xisf';
-   integrate(registeredLights, lightFrameFn);
+   integrate(allRegisteredFrames, lightFrameFn);
 }
 
 let findFits = function(dir) {
