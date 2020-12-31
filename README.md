@@ -17,3 +17,4 @@ One now only needs to specify the frames' locations in the first few lines of co
 
 * FITS headers are not properly set, e.g. total integration time.
 * Most parameters are default ones. You may need to tune it to get the optimal performance.
+* Current best reference frame selection is pretty naive. Better to use the integrated L as the reference frame.

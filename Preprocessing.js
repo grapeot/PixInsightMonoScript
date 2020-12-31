@@ -44,7 +44,7 @@ let main = function() {
       // housekeeping
       channels[channel_i]['registeredLights'] = registeredLights;
       channels[channel_i]['masterLight'] = masterLightFn;
-      allRegisteredFrames.forEach(function(x) { allRegisteredFrames.push(x); });
+      registeredLights.forEach(function(x) { allRegisteredFrames.push(x); });
    }
 
    // final L integration
